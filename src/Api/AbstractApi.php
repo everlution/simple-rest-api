@@ -47,6 +47,11 @@ abstract class AbstractApi implements ApiInterface
             ->handle($this, $request);
     }
 
+    public function getValidator(): ApiValidatorInterface
+    {
+        return $this->apiValidator;
+    }
+
     public function getRequestHandler(): ApiRequestHandlerInterface
     {
         return $this->apiRequestHandler;
