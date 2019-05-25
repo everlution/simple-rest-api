@@ -75,18 +75,18 @@ class SendApi extends AbstractApi implements JsonSchemaApiInterface
 
     public function getRequestJsonSchema(): string
     {
-        return $this->requestJsonSchema;
+        return $this->requestJsonSchema->generate();
     }
 
     public function getResponseJsonSchema(): string
     {
-        return $this->responseJsonSchema;
+        return $this->responseJsonSchema->generate();
     }
 }
 
 ```
 
-## Api Request Handler
+## API Request Handler
 
 This is the service that is in charge to do validation of the request and response and execute the business logic.
 The library provides a default handler `Everlution\SimpleRestApi\ApiRequestHandler\DefaultApiRequestHandler`.
