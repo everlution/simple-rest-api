@@ -95,4 +95,9 @@ abstract class AbstractApi implements ApiInterface
             return new JsonResponse([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getRequestHandler(): ApiRequestHandlerInterface
+    {
+        return $this->apiRequestHandler;
+    }
 }
