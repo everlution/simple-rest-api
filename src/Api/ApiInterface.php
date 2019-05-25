@@ -12,7 +12,7 @@ interface ApiInterface
 
     public function getDescription() : string;
 
-    public function getMethods() : array;
+    public static function getMethods() : array;
 
     public function isEnabled() : bool;
 
@@ -20,7 +20,7 @@ interface ApiInterface
 
     public function getStatusCodes() : array;
 
-    public function getRoutesPaths() : array;
+    public static function getRoutesPaths() : array;
 
     /**
      * This is basically a wrapper of build response that does a bunch of things such as validate the request and the
