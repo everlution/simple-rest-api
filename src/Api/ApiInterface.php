@@ -2,7 +2,9 @@
 
 namespace Everlution\SimpleRestApi\Api;
 
+use Everlution\SimpleRestApi\ApiBusinessLogic\ApiBusinessLogicInterface;
 use Everlution\SimpleRestApi\ApiRequestHandler\ApiRequestHandlerInterface;
+use Everlution\SimpleRestApi\ApiValidator\ApiValidatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,7 +35,7 @@ interface ApiInterface
 
     public function getRequestHandler(): ApiRequestHandlerInterface;
 
-    public function getRequestJsonSchema(): string;
+    public function getValidator(): ApiValidatorInterface;
 
-    public function getResponseJsonSchema(): string;
+    public function getBusinessLogic(): ApiBusinessLogicInterface;
 }
