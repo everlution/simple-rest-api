@@ -19,6 +19,10 @@ class DefaultApiRequestHandler implements ApiRequestHandlerInterface
 
     public function handle(ApiInterface $api, Request $request): Response
     {
+        if (!$api->isEnabled()) {
+            return new JsonResponse('The API is disabled', Response::HTTP_FORBIDDEN);
+        }
+
         // request validation
 
         try {

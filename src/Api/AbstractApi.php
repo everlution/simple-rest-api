@@ -37,6 +37,7 @@ abstract class AbstractApi implements ApiInterface
             Response::HTTP_BAD_REQUEST => 'Bad Request - Invalid Input',
             Response::HTTP_NOT_FOUND => 'Not found',
             Response::HTTP_INTERNAL_SERVER_ERROR => 'Internal Error',
+            Response::HTTP_FORBIDDEN => 'The API is disabled or you don\'t have access to this resource',
         ];
     }
 
