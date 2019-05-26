@@ -2,6 +2,15 @@
 
 This library provides all the tools for defining REST APIs and validate requests and responses.
 
+## Installation
+
+```bash
+composer require everlution/simple-rest-api
+
+# if you are using the default validator
+composer require justinrainbow/json-schema
+```
+
 ## API Definition
 
 In order to define a new API you need to implement the `Everlution\SimpleRestApi\Api\ApiInterface`.
