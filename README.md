@@ -7,7 +7,7 @@ This library provides all the tools for defining REST APIs and validate requests
 ```bash
 composer require everlution/simple-rest-api
 
-# if you are using the default validator
+# if you are using the JsonSchemaValidator
 composer require justinrainbow/json-schema
 ```
 
@@ -173,16 +173,23 @@ Add this file to `config/routes.php`
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use App\Api\Sms;
 
-return function (RoutingConfigurator $routes) {
-    $i = 0;
-    foreach (Sms\SendApi::getRoutesPaths() as $routePath) {
-        $pathName = sprintf('%s_%s', str_replace('\\', '_', Sms\SendApi::class), $i);
-        $routes
-            ->add($pathName, $routePath)
-            ->controller([Sms\SendApi::class, 'sendResponse'])
-            ->methods(Sms\SendApi::getMethods());
+$apis = [
+    Sms\SendApi::class,
+    // ... other APIs
+];
 
-        $i++;
+return function (RoutingConfigurator $routes) use ($apis) {
+    foreach ($apis as $api) {
+        $i = 0;
+        foreach ($api::getRoutesPaths() as $routePath) {
+            $pathName = sprintf('%s_%s', str_replace('\\', '_', $api), $i);
+            $routes
+                ->add($pathName, $routePath)
+                ->controller([$api, 'sendResponse'])
+                ->methods($api::getMethods());
+
+            $i++;
+        }
     }
 };
 
