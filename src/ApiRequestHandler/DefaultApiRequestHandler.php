@@ -32,7 +32,7 @@ class DefaultApiRequestHandler implements ApiRequestHandlerInterface
         } catch (ApiValidatorException $exception) {
             return new JsonResponse($exception->getErrors(), Response::HTTP_BAD_REQUEST);
         } catch (\Exception $exception) {
-            return $this->getExceptionResponse($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->getExceptionResponse($api, $exception, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // logic
@@ -42,7 +42,7 @@ class DefaultApiRequestHandler implements ApiRequestHandlerInterface
                 ->getBusinessLogic()
                 ->execute($api, $request);
         } catch (\Exception $exception) {
-            return $this->getExceptionResponse($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->getExceptionResponse($api, $exception, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // response validation
@@ -52,18 +52,22 @@ class DefaultApiRequestHandler implements ApiRequestHandlerInterface
                 ->getValidator()
                 ->validateResponse($api, $response);
         } catch (ApiValidatorException $exception) {
-            return $this->getExceptionResponse($exception, Response::HTTP_INTERNAL_SERVER_ERROR, $response);
+            return $this->getExceptionResponse($api, $exception, Response::HTTP_INTERNAL_SERVER_ERROR, $response);
         } catch (\Exception $exception) {
-            return $this->getExceptionResponse($exception, Response::HTTP_INTERNAL_SERVER_ERROR, $response);
+            return $this->getExceptionResponse($api, $exception, Response::HTTP_INTERNAL_SERVER_ERROR, $response);
         }
 
         return $response;
     }
 
-    private function getExceptionResponse(\Exception $e, int $statusCode, ?Response $response = null): JsonResponse
-    {
+    private function getExceptionResponse(
+        ApiInterface $api,
+        \Exception $e,
+        int $statusCode,
+        ?Response $response = null
+    ): JsonResponse {
         $data = [
-            'api' => get_class($this),
+            'api' => get_class($api),
             'api_validation_errors' => $e instanceof ApiValidatorException ? $e->getErrors() : null,
             'response' => $response ? json_decode($response->getContent(), true) : null,
             'exception' => (string) $e,
