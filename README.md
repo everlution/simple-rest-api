@@ -178,3 +178,11 @@ return function (RoutingConfigurator $routes) {
 };
 
 ```
+
+And then you need to add this to `config/services.yaml` in order to make the framework recognize the API as a controller.
+
+```yam;
+_instanceof:
+    Everlution\SimpleRestApi\Api\ApiInterface:
+    tags: ['controller.service_arguments']
+```
