@@ -4,8 +4,7 @@ namespace Everlution\SimpleRestApi\ApiValidator;
 
 use Everlution\SimpleRestApi\Api\ApiInterface;
 use Everlution\SimpleRestApi\Api\JsonSchemaApiInterface;
-use Opis\JsonSchema\Schema;
-use Opis\JsonSchema\Validator;
+use JsonSchema\Validator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -53,22 +52,35 @@ class JsonSchemaApiValidator implements ApiValidatorInterface
 
     private function jsonSchemaValidate(string $jsonSchema, array $record)
     {
-        $schema = Schema::fromJsonString($jsonSchema);
+        $data = $this->arrayToObject($record);
 
-        $validator = new Validator();
+        $this
+            ->validator
+            ->validate($data, json_decode($jsonSchema, true));
 
-        $object = json_decode(json_encode($record));
-
-        $result = $validator->schemaValidation($object, $schema);
-
-        if (!$result->isValid()) {
-            $errors = [];
-
-            foreach ($result->getErrors() as $error) {
-                $errors[$error->keyword()] = json_encode($error->keywordArgs());
-            }
-
-            throw new ApiValidatorException($errors);
+        if (!$this->validator->isValid()) {
+            throw new ApiValidatorException($this->validator->getErrors());
         }
+    }
+
+    /**
+     * This must be recursive, so the whole array and sub arrays must be stdClass
+     *
+     * @param $array
+     * @return mixed
+     */
+    private function arrayToObject($array): object
+    {
+        if (count($array) == 0) {
+            return new \stdClass();
+        }
+
+        // First we convert the array to a json string
+        $json = json_encode($array);
+
+        // The we convert the json string to a stdClass()
+        $object = json_decode($json);
+
+        return $object;
     }
 }
