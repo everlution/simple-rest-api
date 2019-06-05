@@ -30,6 +30,12 @@ class JsonSchemaApiValidator implements ApiValidatorInterface
         $data = $request->getContent();
         $dataArray = json_decode($data, true);
 
+        if ($dataArray === null) {
+            throw new ApiValidatorException([
+                '' => 'The Request Content is not a valid JSON string',
+            ]);
+        }
+
         $this->jsonSchemaValidate($api->getRequestJsonSchema(), $dataArray);
     }
 
@@ -45,6 +51,12 @@ class JsonSchemaApiValidator implements ApiValidatorInterface
 
         $data = $response->getContent();
         $dataArray = json_decode($data, true);
+
+        if ($dataArray === null) {
+            throw new ApiValidatorException([
+                '' => 'The Request Content is not a valid JSON string',
+            ]);
+        }
 
         $this->jsonSchemaValidate($api->getResponseJsonSchema(), $dataArray);
     }
