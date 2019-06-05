@@ -81,7 +81,7 @@ class JsonSchemaApiValidator implements ApiValidatorInterface
      * @param $array
      * @return mixed
      */
-    private function arrayToObject($array): object
+    private function arrayToObject($array)
     {
         if (count($array) == 0) {
             return new \stdClass();
