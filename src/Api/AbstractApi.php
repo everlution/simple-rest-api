@@ -62,4 +62,14 @@ abstract class AbstractApi implements ApiInterface
     {
         return $this->apiBusinessLogic;
     }
+
+    public function isDeprecated(): bool
+    {
+        return false;
+    }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
 }
